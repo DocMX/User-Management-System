@@ -1,4 +1,4 @@
-<template>
+  <template>
     <GuestLayout title="Request new password">
       <form class="mt-8 space-y-6" action="#" method="POST">
         <input type="hidden" name="remember" value="true"/>
@@ -33,6 +33,6 @@
   </template>
   
   <script setup>
-  import {LockClosedIcon} from '@heroicons/vue/24/solid'
-  import GuestLayout from "../components/GuestLayout.vue";
+    import {LockClosedIcon} from '@heroicons/vue/24/solid'
+    import GuestLayout from "../components/GuestLayout.vue";
   </script>
