@@ -1,6 +1,13 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+      
+    <!-- Botón "Aún no registrado" -->
+    <div class="text-center mb-4">
+        <a href="{{ route('register') }}" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+            {{ __('Not registered yet?') }}
+        </a>
+    </div>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -19,7 +26,7 @@
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
-                            required autocomplete="current-password" />
+                             />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
