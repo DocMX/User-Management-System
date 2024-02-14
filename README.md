@@ -21,7 +21,9 @@
 You need to have PHP version **8.0** or above. Node.js version **12.0** or above.
 
 ## Demo
-
+## (User admin in seeder  )
+email:     admin@example.com  
+password:  admin123
 
 
 ## Installation
@@ -32,7 +34,8 @@ You need to have PHP version **8.0** or above. Node.js version **12.0** or above
 3. Run `composer install`
 4. Set the encryption key by executing php artisan key:generate --ansi
 5. Create database
-6. Run migrations php artisan migrate --seed
+6. Run migrations php artisan migrate --seed 
+   
 7. Copy `.env.example` into `.env` file and adjust parameters
 8. Run `php artisan serve` to start the project at http://localhost:8000
 
