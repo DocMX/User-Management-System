@@ -1,9 +1,14 @@
-<script setup>
+<template>
+  <v-app>
+    <router-view></router-view>
+  </v-app>
+</template>
+
+<script>
+export default {
+  name: 'App',
+};
 </script>
 
-<template>
-  <router-view></router-view>
-</template>
-  
 <style>
 </style>

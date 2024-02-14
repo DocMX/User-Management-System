@@ -197,7 +197,7 @@ export default {
       if (!confirm(`Are you sure you want to delete the user?`)) {
         return;
       }
-      store.dispatch('deleteUser', user.id)
+      store.dispatch('deleteUser', user)
         .then(res => {
           // TODO Show notification
           this.getUsers();
