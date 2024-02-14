@@ -7,6 +7,7 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Api\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -44,7 +45,10 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $data = $request->validated();
-        $data['is_admin'] = true;
+        $is_admin = $request->has('is_admin') ? true : false;
+        Log::info('Valor de is_admin recibido: ' . ($is_admin ? 'true' : 'false'));
+        $data['is_admin'] = $is_admin;
+
         $data['email_verified_at'] = date('Y-m-d H:i:s');
         $data['password'] = Hash::make($data['password']);
 

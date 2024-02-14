@@ -47,7 +47,18 @@
                :checked="props.modelValue"
                :required="required"
                @change="emit('update:modelValue', $event.target.checked)"
-               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
+               class="text-indigo-600 rounded border border-black-900 focus:ring-indigo-500"/>
+        <label :for="id" class="ml-2 block text-sm text-gray-900"> {{ label }} </label>
+      </template>
+      <template v-else-if="type === 'checkbox'">
+        <input :id="id"
+               :name="name"
+               :type="type"
+               :checked="props.modelValue"
+               :required="required"
+               @change="emit('update:modelValue', $event.target.checked)"
+               :class="inputClasses"
+        />
         <label :for="id" class="ml-2 block text-sm text-gray-900"> {{ label }} </label>
       </template>
       <template v-else>
@@ -77,7 +88,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const editor = ClassicEditor;
 
 const props = defineProps({
-  modelValue: [String, Number, File],
+  modelValue: [String, Number, File, Boolean],
   label: String,
   type: {
     type: String,
