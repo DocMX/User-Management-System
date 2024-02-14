@@ -6,6 +6,9 @@ import AppLayout from '../components/AppLayout.vue'
 import ResetPassword from "../views/ResetPassword.vue";
 import NotFound from "../views/NotFound.vue";
 import store from "../store";
+import Users from "../views/Users/Users.vue";
+import Customers from "../views/Customers/Customers.vue";
+
 
 const routes = [
   {
@@ -26,6 +29,17 @@ const routes = [
         name: 'app.dashboard',
         component: Dashboard
       },
+      {
+        path: 'users',
+        name: 'app.users',
+        component: Users
+      },
+      {
+        path: 'customers',
+        name: 'app.customers',
+        component: Customers
+      },
+   
     ]
   },
 

@@ -47,6 +47,29 @@ export function createUser({commit}, user) {
 export function updateUser({commit}, user) {
   return axiosClient.put(`/users/${user.id}`, user)
 }
+export function deleteUser({commit}, user) {
+  return axiosClient.delete(`/users/${user.id}`)
+}
+
+export function getCustomers({commit, state}, {url = null, search = '', per_page, sort_field, sort_direction} = {}) {
+}
+
+export function getCustomer({commit}, id) {
+  return axiosClient.get(`/customers/${id}`)
+}
+
+export function createCustomer({commit}, customer) {
+  return axiosClient.post('/customers', customer)
+}
+
+export function updateCustomer({commit}, customer) {
+  return axiosClient.put(`/customers/${customer.id}`, customer)
+}
+
+export function deleteCustomer({commit}, customer) {
+  return axiosClient.delete(`/customers/${customer.id}`)
+}
+
 
 
 

@@ -38,6 +38,20 @@
     state.toast.message = '';
   }
   
-  export function setCountries(state, countries) {
-    state.countries = countries.data;
+
+  export function setCustomers(state, [loading, data = null]) {
+
+    if (data) {
+      state.customers = {
+        ...state.customers,
+        data: data.data,
+        links: data.meta?.links,
+        page: data.meta.current_page,
+        limit: data.meta.per_page,
+        from: data.meta.from,
+        to: data.meta.to,
+        total: data.meta.total,
+      }
+    }
+    state.products.loading = loading;
   }
