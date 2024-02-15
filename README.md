@@ -35,7 +35,8 @@ password:  admin123
 4. Set the encryption key by executing php artisan key:generate --ansi
 5. Create database
 6. Run migrations php artisan migrate --seed 
-   
+   *if the database is not seeded, run 
+   php artisan db:seed--class=UsersTableSeeder   
 7. Copy `.env.example` into `.env` file and adjust parameters
 8. Run `php artisan serve` to start the project at http://localhost:8000
 
