@@ -57,7 +57,6 @@
                     Cancel
                   </v-btn>
                 </footer>
-
               </form>
             </DialogPanel>
           </TransitionChild>
