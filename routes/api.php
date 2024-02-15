@@ -18,8 +18,6 @@ use App\Http\Controllers\Api\CustomerController;
 */
 
 Route::middleware(['auth:api'])->group(function () {
-    // Rutas protegidas por JWT
-
     // Ejemplo de ruta protegida
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -38,5 +36,3 @@ Route::middleware(['auth:api'])->group(function () {
 
 // Ruta para iniciar sesión y obtener el token JWT
 Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
-
-// Otras rutas públicas...
