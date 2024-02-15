@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -32,40 +34,38 @@ class AuthController extends Controller
     }
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email'=> ['required', 'email'],
-            'password' => 'required',
-            'remember' => 'boolean'
-        ]);
-        $remember = $credentials['remember'] ?? false;
-        unset($credentials['remember']);
-        if (!Auth::attempt($credentials, $remember)) {
-            return response([
-                'message' => 'Email or password is incorrect'
-            ], 422);
-        }
+         // Validar las credenciales del usuario
+         $credentials = $request->only('email', 'password');
 
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        if (!$user->is_admin) {
+         try {
+             // Intentar autenticar al usuario y generar el token JWT
+             if (!$token = JWTAuth::attempt($credentials)) {
+                 return response()->json(['message' => 'Email or password is incorrect'], 422);
+             }
+         } catch (JWTException $e) {
+             return response()->json(['message' => 'Could not create token'], 500);
+         }
+ 
+         // Obtener el usuario autenticado
+         $user = auth()->user();
+ 
+         // Verificar si el usuario es un administrador
+         if (!$user->is_admin) {
+             return response()->json(['message' => 'You don\'t have permission to authenticate as admin'], 403);
+         }
+ 
+         // Verificar si el email del usuario está verificado
+         if (!$user->email_verified_at) {
             Auth::logout();
-            return response([
-                'message' => 'You don\'t have permission to authenticate as admin'
-            ], 403);
+            return response()->json(['message' => 'Your email address is not verified'], 403);
         }
-        if (!$user->email_verified_at) {
-            Auth::logout();
-            return response([
-                'message' => 'Your email address is not verified'
-            ], 403);
-        }
-        $token = $user->createToken('auth_token')->plainTextToken;
-        
-        // Devuelve la respuesta con el usuario y el token JWT
-        return response()->json([
-        'user' => new UserResource($user),
-        'token' => $token
-    ]);
+ 
+         // Devolver la respuesta con el usuario y el token JWT
+         return response()->json([
+             'user' => new UserResource($user),
+             'token' => $token
+         ]);
+     
 
     }
 

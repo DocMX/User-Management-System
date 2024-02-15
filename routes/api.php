@@ -12,15 +12,22 @@ use App\Http\Controllers\Api\CustomerController;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
 |
 */
 
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::get('/user', [\App\Http\Controllers\Api\AuthController::class, 'getUser']);
-    Route::post('/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
+Route::middleware(['auth:api'])->group(function () {
+    // Rutas protegidas por JWT
 
+    // Ejemplo de ruta protegida
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
+    
+    // Otras rutas protegidas...
+    
     // Dashboard Routes
     Route::get('/dashboard/customers-count', [DashboardController::class, 'activeCustomers']);
     Route::get('/dashboard/latest-customers', [DashboardController::class, 'latestCustomers']);
@@ -29,9 +36,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('customers', CustomerController::class);
 });
 
+// Ruta para iniciar sesión y obtener el token JWT
 Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
-/*
-Route::get('/endpoint', function () {
-    return response()->json(['message' => 'Hello from the API endpoint']);
-});
-*/
+
+// Otras rutas públicas...

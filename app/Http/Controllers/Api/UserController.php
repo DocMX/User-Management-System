@@ -7,13 +7,9 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Api\User;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 {
@@ -44,20 +40,27 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        $data = $request->validated();
-        $is_admin = $request->has('is_admin') ? true : false;
-        Log::info('Valor de is_admin recibido: ' . ($is_admin ? 'true' : 'false'));
-        $data['is_admin'] = $is_admin;
+        // Verificar si el usuario está autenticado a través de JWT
+    if (!Auth::check()) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
 
-        $data['email_verified_at'] = date('Y-m-d H:i:s');
-        $data['password'] = Hash::make($data['password']);
+    // Validar y obtener los datos del request
+    $data = $request->validated();
+    $is_admin = $request->has('is_admin') ? true : false;
 
-        $data['created_by'] = $request->user()->id;
-        $data['updated_by'] = $request->user()->id;
+    // Asignar los valores recibidos al arreglo de datos
+    $data['is_admin'] = $is_admin;
+    $data['email_verified_at'] = now(); // Usar la función now() para obtener la fecha y hora actual
+    $data['password'] = Hash::make($data['password']);
+    $data['created_by'] = Auth::id(); // Obtener el ID del usuario autenticado a través de JWT
+    $data['updated_by'] = Auth::id(); // Obtener el ID del usuario autenticado a través de JWT
 
-        $user = User::create($data);
+    // Crear el usuario
+    $user = User::create($data);
 
-        return new UserResource($user);
+    // Devolver la respuesta con el recurso del usuario creado
+    return new UserResource($user);
     }
 
     /**
