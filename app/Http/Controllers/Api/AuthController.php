@@ -101,6 +101,7 @@ class AuthController extends Controller
         $token = Password::createToken($user);
         
         Notification::send($user, new ResetPasswordNotification($token));
+        return response()->json(['message' => 'Password reset email sent successfully']);
     }
 
     public function resetPassword(Request $request)

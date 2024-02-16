@@ -1,25 +1,29 @@
 <?php
 
 namespace Tests\Feature\Api;
-
+use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 use Tests\TestCase;
 
 class UserApiTest extends TestCase
 {
-    //para que pase la prueba se debe tener el registro de: 
-    //email:  admin@example.com
-    //password: admin123
-    //en la tabla users, si no se tiene se debe ejecutar el comando:
-    //usa: php artisan db:seed --class=UsersTableSeeder 
     public function testLoginWithValidCredentials()
     {
+        // Crear un usuario en la base de datos usando el factory
+        $user = User::factory()->create([
+            'email' => 'adminTest@example.com',
+            'password' => bcrypt('admin123'),
+            'is_admin' => true,
+        ]);
         // Realiza una solicitud POST a la ruta de inicio de sesión
         $response = $this->postJson('/api/login', [
-            'email' => 'admin@example.com',
+            'email' => 'adminTest@example.com',
             'password' => 'admin123',
         ]);
 
@@ -129,7 +133,26 @@ class UserApiTest extends TestCase
         // Verificar que el usuario se haya eliminado correctamente de la base de datos
          $this->assertDatabaseMissing('users', ['id' => $userToDelete->id]);
     }
+    public function test_password_can_be_reset_with_valid_token(): void
+    {
+        Notification::fake();
 
+        $user = User::factory()->create();
 
+        $this->post('/forgot-password', ['email' => $user->email]);
 
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            $response = $this->post('/reset-password', [
+                'token' => $notification->token,
+                'email' => $user->email,
+                'password' => 'password',
+                'password_confirmation' => 'password',
+            ]);
+
+            $response->assertSessionHasNoErrors();
+
+            return true;
+        });
+
+    }
 }
