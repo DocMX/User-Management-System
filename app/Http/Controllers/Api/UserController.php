@@ -41,26 +41,26 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         // Verificar si el usuario está autenticado a través de JWT
-    if (!Auth::check()) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-    // Validar y obtener los datos del request
-    $data = $request->validated();
-    $is_admin = $request->has('is_admin') ? true : false;
-
-    // Asignar los valores recibidos al arreglo de datos
-    $data['is_admin'] = $is_admin;
-    $data['email_verified_at'] = now(); // Usar la función now() para obtener la fecha y hora actual
-    $data['password'] = Hash::make($data['password']);
-    $data['created_by'] = Auth::id(); // Obtener el ID del usuario autenticado a través de JWT
-    $data['updated_by'] = Auth::id(); // Obtener el ID del usuario autenticado a través de JWT
-
-    // Crear el usuario
-    $user = User::create($data);
-
-    // Devolver la respuesta con el recurso del usuario creado
-    return new UserResource($user);
+        // Validar y obtener los datos del request
+        $data = $request->validated();
+        $is_admin = $request->has('is_admin') ? true : false;
+        
+        // Asignar los valores recibidos al arreglo de datos
+        $data['is_admin'] = $is_admin;
+        $data['email_verified_at'] = now(); // Usar la función now() para obtener la fecha y hora actual
+        $data['password'] = Hash::make($data['password']);
+        $data['created_by'] = Auth::id(); // Obtener el ID del usuario autenticado a través de JWT
+        $data['updated_by'] = Auth::id(); // Obtener el ID del usuario autenticado a través de JWT
+        
+        // Crear el usuario
+        $user = User::create($data);
+        
+        // Devolver la respuesta con el recurso del usuario creado
+        return new UserResource($user);
     }
 
     /**

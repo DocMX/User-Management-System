@@ -39,6 +39,14 @@ export async function getUsers({commit, state}, {url = null, search = '', per_pa
     commit('setUsers', [false]);
   }
 }
+export function forgotPassword({commit}, email) {
+  return axiosClient.post('/forgot-password',  { email })
+}
+
+export function resetPassword({commit}, data) {
+  return axiosClient.post('/reset-password', data)
+}
+
 
 export function createUser({commit}, user) {
   return axiosClient.post('/users', user)

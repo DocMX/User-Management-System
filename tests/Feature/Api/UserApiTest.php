@@ -26,6 +26,30 @@ class UserApiTest extends TestCase
         // Verifica que la solicitud fue exitosa (código de estado 200)
         $response->assertStatus(200);
     }
+    public function testForgotPassword()
+    {
+        // Crear un usuario en la base de datos
+        $user = \App\Models\User::factory()->create();
+    
+        // Realiza una solicitud POST a la ruta de olvidar contraseña
+        $response = $this->postJson('/api/forgot-password', [
+            'email' => $user->email,
+        ]);
+    
+        // Verificar que la solicitud fue exitosa (código de estado 200)
+        $response->assertStatus(200);
+    
+        // Verificar que el correo electrónico fue enviado correctamente
+        // Esto puede variar dependiendo de cómo implementaste el envío de correo electrónico en tu lógica de olvidar contraseña
+        // Puedes verificar en la respuesta si se devuelve un mensaje o estructura de datos que indique que el correo fue enviado correctamente
+        // Por ejemplo:
+        $response->assertJson([
+            'message' => 'Password reset email sent successfully',
+        ]);
+    }
+
+
+
     public function testCreateUserByAdmin()
     {
         // Autenticar un usuario con privilegios de administrador
@@ -82,6 +106,30 @@ class UserApiTest extends TestCase
             'email' => 'updated@example.com',
         ]);
     }
+
+    public function testDeleteUserByAdmin()
+    {
+        // Autenticar un usuario con privilegios de administrador
+        $admin = \App\Models\User::factory()->create([
+            'is_admin' => true,
+        ]);
+        $token = JWTAuth::fromUser($admin);
+
+        // Crear un usuario para ser eliminado
+        $userToDelete = \App\Models\User::factory()->create();
+
+        // Realizar una solicitud DELETE a la ruta de eliminación de usuario
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->deleteJson('/api/users/' . $userToDelete->id);
+
+        // Verificar que la solicitud fue exitosa (código de estado 204)
+        $response->assertStatus(204);
+
+        // Verificar que el usuario se haya eliminado correctamente de la base de datos
+         $this->assertDatabaseMissing('users', ['id' => $userToDelete->id]);
+    }
+
 
 
 }

@@ -10,6 +10,7 @@ import Users from "../views/Users/Users.vue";
 import Customers from "../views/Customers/Customers.vue";
 
 
+
 const routes = [
   {
     path: '/',
@@ -57,6 +58,7 @@ const routes = [
           requiresGuest: true
         }
       },
+      
       {
         path: '/reset-password/:token',
         name: 'resetPassword',

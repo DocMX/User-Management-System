@@ -18,13 +18,12 @@ use App\Http\Controllers\Api\CustomerController;
 */
 
 Route::middleware(['auth:api'])->group(function () {
-    // Ejemplo de ruta protegida
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     Route::post('/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
     
-    // Otras rutas protegidas...
     
     // Dashboard Routes
     Route::get('/dashboard/customers-count', [DashboardController::class, 'activeCustomers']);
@@ -36,3 +35,7 @@ Route::middleware(['auth:api'])->group(function () {
 
 // Ruta para iniciar sesión y obtener el token JWT
 Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
+
+Route::post('/forgot-password', [\App\Http\Controllers\Api\AuthController::class, 'forgotPassword'])->name('password.email');
+
+Route::post('/reset-password', [\App\Http\Controllers\Api\AuthController::class, 'resetPassword'])->name('password.reset');
