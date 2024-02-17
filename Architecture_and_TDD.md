@@ -1,33 +1,29 @@
-# Arquitectura y TDD en la Aplicación Laravel-Vue
-## Introducción
-    Este informe proporciona una visión general de la arquitectura de nuestra aplicación Laravel-Vue y describe cómo implementamos Test-Driven Development (TDD) durante su desarrollo. Se detallan las decisiones clave tomadas durante el diseño y desarrollo, así como los procesos y herramientas utilizados para garantizar la calidad del código y la robustez de la aplicación.
-
-## Arquitectura de la Aplicación
-Nuestra aplicación sigue una arquitectura de cliente-servidor, donde el backend está desarrollado con Laravel y el frontend con Vue.js. A continuación se describen los componentes principales de cada parte:
+# Architecture and TDD in Laravel-Vue Application
+##Introduction
+This report provides an overview of the architecture of our Laravel-Vue application and describes how we implemented Test-Driven Development (TDD) during its development. The key decisions made during design and development are detailed, as well as the processes and tools used to ensure the quality of the code and the robustness of the application.
+## Application Architecture
+Our application follows a client-server architecture, where the backend is developed with Laravel and the frontend with Vue.js. The main components of each part are described below:
 
 ## Backend (Laravel)
-    Controladores: Utilizados para manejar las solicitudes HTTP y orquestar la lógica de negocios.
-    Modelos: Representan las estructuras de datos y definen las relaciones entre ellas.
-    Rutas: Define las URL y los controladores asociados para manejar las solicitudes entrantes.
-    Middleware: Utilizado para filtrar y modificar las solicitudes HTTP antes de que lleguen a los controladores.
-## Frontend (Vue.js)
-    Componentes: Unidades independientes de la interfaz de usuario que se pueden reutilizar en toda la aplicación.
-    Rutas: Definidas mediante Vue Router para gestionar la navegación entre diferentes vistas de la aplicación.
-    Estado de la Aplicación: Gestionado mediante Vuex para mantener un estado centralizado y compartido entre los componentes.
+Controllers: Used to handle HTTP requests and orchestrate business logic.
+Models: They represent data structures and define the relationships between them.
+Routes: Define URLs and associated handlers to handle incoming requests.
+Middleware: Used to filter and modify HTTP requests before they reach the controllers.
+## Interface (Vue.js)
+Components: Independent units of the user interface that can be reused throughout the application.
+Routes: Defined using Vue Router to manage navigation between different views of the application.
+Application State: Managed through Vuex to maintain a centralized and shared state between components.
 
-## Implementación de TDD
-    Durante el desarrollo de nuestra aplicación, seguimos un enfoque de TDD para garantizar la calidad del código y la estabilidad del sistema. Aquí se resumen los pasos clave que seguimos:
+## TDD implementation
+During the development of our application, we follow a TDD approach to ensure code quality and system stability. Here are the key steps we follow: Writing Tests: Before writing code, we write automated tests that describe the expected behavior of new features or functionality.
+Test Execution: We run the tests to verify what crashed initially, confirming that we are testing the correct behavior.
+Code Implementation: We write the minimum code necessary for the tests to pass.
+Refactoring: Once the tests pass, we refactor the code to improve its quality and readability, keeping the tests as a safety net to avoid regressions.
+Key Decisions and Challenges.
 
-    Redacción de Pruebas: Antes de escribir código, escribimos pruebas automatizadas que describen el comportamiento esperado de las nuevas características o funcionalidades.
-    Ejecución de Pruebas: Ejecutamos las pruebas para verificar que fallen inicialmente, lo que confirma que estamos probando el comportamiento correcto.
-    Implementación del Código: Escribimos el código mínimo necesario para que las pruebas pasen.
-    Refactorización: Una vez que las pruebas pasan, refactorizamos el código para mejorar su calidad y legibilidad, manteniendo las pruebas como una red de seguridad para evitar regressions.
-    Decisiones Clave y Desafíos
-    Durante el desarrollo, nos enfrentamos a varios desafíos y tomamos decisiones clave que afectaron la arquitectura y la implementación de la aplicación. Algunas de estas decisiones incluyeron:
+During development, we faced several challenges and made key decisions that will affect the architecture and implementation of the application. Some of these decisions include: Choosing Laravel and Vue.js as core technologies due to their maturity, active community, and rapid development capabilities.
+Implemented token based authentication using JWT for API security.
+Integration of testing tools like PHPUnit and Jest to write and execute unit and integration tests on the backend and frontend respectively.
 
-Elección de Laravel y Vue.js como tecnologías principales debido a su madurez, comunidad activa y capacidades de desarrollo rápido.
-Implementación de autenticación basada en tokens utilizando JWT para la seguridad de la API.
-Integración de herramientas de pruebas como PHPUnit y Jest para escribir y ejecutar pruebas unitarias y de integración en el backend y el frontend respectivamente.
-
-### Conclusiones
-La combinación de una arquitectura bien definida y la práctica de TDD ha sido fundamental para este proyecto. Nos ha permitido desarrollar una aplicación robusta y escalable, con un alto nivel de confiabilidad y mantenibilidad.
+### Conclusions
+The combination of a well-defined architecture and the practice of TDD has been fundamental for this project. It has allowed us to develop a robust and scalable application, with a high level of reliability and maintainability.
