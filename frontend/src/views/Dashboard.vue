@@ -36,43 +36,43 @@
 </template>
 
 <script setup>
-import {UserIcon} from '@heroicons/vue/24/outline'
-import axiosClient from "../axios.js";
-import {computed, onMounted, ref} from "vue";
-import Spinner from "../components/core/Spinner.vue";
-import {useStore} from "vuex";
+  import {UserIcon} from '@heroicons/vue/24/outline'
+  import axiosClient from "../axios.js";
+  import {computed, onMounted, ref} from "vue";
+  import Spinner from "../components/core/Spinner.vue";
+  import {useStore} from "vuex";
 
-const store = useStore();
+  const store = useStore();
 
-const loading = ref({
-  customersCount: true,
-  latestCustomers: true,
+  const loading = ref({
+    customersCount: true,
+    latestCustomers: true,
 
-})
-const customersCount = ref(0);
-const latestCustomers = ref([]);
+  })
+  const customersCount = ref(0);
+  const latestCustomers = ref([]);
 
 
-function updateDashboard() {
+  function updateDashboard() {
+
+    axiosClient.get(`/dashboard/customers-count`).then(({ data }) => {
+      customersCount.value = data;
+      loading.value.customersCount = false;
+    });
+
+    axiosClient.get(`/dashboard/latest-customers`).then(({ data: customers }) => {
+      latestCustomers.value = customers;
+      loading.value.latestCustomers = false;
+    });
+
   
-  axiosClient.get(`/dashboard/customers-count`).then(({ data }) => {
-    customersCount.value = data;
-    loading.value.customersCount = false;
-  });
+  }
 
-  axiosClient.get(`/dashboard/latest-customers`).then(({ data: customers }) => {
-    latestCustomers.value = customers;
-    loading.value.latestCustomers = false;
-  });
-
+  function onDatePickerChange() {
+    updateDashboard()
+  }
   
-}
-
-function onDatePickerChange() {
-  updateDashboard()
-}
-
-onMounted(() => updateDashboard())
+  onMounted(() => updateDashboard())
 </script>
 
 <style scoped>

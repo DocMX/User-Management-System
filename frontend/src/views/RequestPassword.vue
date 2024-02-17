@@ -1,13 +1,13 @@
   <template>
     <GuestLayout title="Request new password">
-      <form class="mt-8 space-y-6" action="#" method="POST">
+      <form class="mt-8 space-y-6" @submit.prevent="submitForm">
         <input type="hidden" name="remember" value="true"/>
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email-address" class="sr-only">Email address</label>
-            <input id="email-address" name="email" type="email" autocomplete="email" required=""
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                   placeholder="Email address"/>
+            <input v-model="email" @input="updateEmail" id="email-address" name="email" type="email" autocomplete="email" required=""
+                 class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                 placeholder="Email address"/>
           </div>
         </div>
   
@@ -33,6 +33,23 @@
   </template>
   
   <script setup>
-    import {LockClosedIcon} from '@heroicons/vue/24/solid'
+    import { useStore } from 'vuex';
+    import { ref } from 'vue';
+    import { LockClosedIcon } from '@heroicons/vue/24/solid';
     import GuestLayout from "../components/GuestLayout.vue";
+    
+    const store = useStore();
+    const email = ref('');
+    
+    const submitForm = async () => {
+      try {
+        await store.dispatch('forgotPassword', email.value);
+        // Manejar el éxito: redirigir al usuario a una página de confirmación o mostrar un mensaje de éxito
+      } catch (error) {
+        console.error(error.message); // Manejar el error: mostrar un mensaje de error al usuario
+      }
+    };
+      const updateEmail = (event) => {
+        email.value = event.target.value;
+      };
   </script>

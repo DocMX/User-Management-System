@@ -94,42 +94,42 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import {LockClosedIcon} from '@heroicons/vue/24/solid'
-import GuestLayout from "../components/GuestLayout.vue";
-import store from "../store";
-import router from "../router";
-import axiosClient from '../axios';
+  import {ref} from 'vue'
+  import {LockClosedIcon} from '@heroicons/vue/24/solid'
+  import GuestLayout from "../components/GuestLayout.vue";
+  import store from "../store";
+  import router from "../router";
+  import axiosClient from '../axios';
 
-axiosClient.get('/endpoint')
-  .then(response => {
-    console.log('Respuesta del servidor:', response.data);
-  })
-  .catch(error => {
-    console.error('Error al conectar con el servidor:', error);
-  });
-
-
-let loading = ref(false);
-let errorMsg = ref("");
-
-const user = {
-  email: '',
-  password: '',
-  remember: false
-}
-
-function login() {
-  loading.value = true;
-  store.dispatch('login', user)
-    .then(() => {
-      loading.value = false;
-      router.push({name: 'app.dashboard'})
+  axiosClient.get('/endpoint')
+    .then(response => {
+      console.log('Respuesta del servidor:', response.data);
     })
-    .catch(({response}) => {
-      loading.value = false;
-      errorMsg.value = response.data.message;
-    })
-}
+    .catch(error => {
+      console.error('Error al conectar con el servidor:', error);
+    });
+  
+  
+  let loading = ref(false);
+  let errorMsg = ref("");
+  
+  const user = {
+    email: '',
+    password: '',
+    remember: false
+  }
+  
+  function login() {
+    loading.value = true;
+    store.dispatch('login', user)
+      .then(() => {
+        loading.value = false;
+        router.push({name: 'app.dashboard'})
+      })
+      .catch(({response}) => {
+        loading.value = false;
+        errorMsg.value = response.data.message;
+      })
+  }
 
 </script>

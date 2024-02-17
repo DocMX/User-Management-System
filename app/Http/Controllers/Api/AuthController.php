@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -81,5 +87,45 @@ class AuthController extends Controller
     public function getUser(Request $request)
     {
         return new UserResource($request->user());
+    }
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+    
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            // El usuario no existe en la base de datos
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        $token = Password::createToken($user);
+        
+        Notification::send($user, new ResetPasswordNotification($token));
+        return response()->json(['message' => 'Password reset email sent successfully']);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed',
+        ]);
+    
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(40), // Generar nuevo token de recordar sesión
+                ])->save();
+    
+                event(new PasswordReset($user));
+            }
+        );
+    
+        return $status === Password::PASSWORD_RESET
+            ? response()->json(['message' => 'Contraseña cambiada con éxito'])
+            : response()->json(['message' => 'Error al cambiar la contraseña'], 500);
     }
 }
