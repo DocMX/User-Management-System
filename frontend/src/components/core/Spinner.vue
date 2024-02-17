@@ -25,17 +25,17 @@
   </template>
   
   <script setup>
-  
-  const {text} = defineProps({
-    text: {
-      type: String,
-      default: 'Please Wait...'
-    },
-    class: {
-      type: String,
-      default: 'py-8'
-    }
-  })
+    // props
+    const {text} = defineProps({
+      text: {
+        type: String,
+        default: 'Please Wait...'
+      },
+      class: {
+        type: String,
+        default: 'py-8'
+      }
+    })
   
   </script>
   

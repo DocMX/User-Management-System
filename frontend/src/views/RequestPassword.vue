@@ -52,4 +52,4 @@
       const updateEmail = (event) => {
         email.value = event.target.value;
       };
-</script>
+  </script>

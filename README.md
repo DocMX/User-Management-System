@@ -17,11 +17,6 @@
 ## Requirements
 You need to have PHP version **8.0** or above. Node.js version **12.0** or above.
 
-## Demo
-## (User admin in seeder  )
-email:     admin@example.com  
-password:  admin123
-
 
 ## Installation
 
