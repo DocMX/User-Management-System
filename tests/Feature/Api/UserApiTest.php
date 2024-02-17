@@ -133,26 +133,73 @@ class UserApiTest extends TestCase
         // Verificar que el usuario se haya eliminado correctamente de la base de datos
          $this->assertDatabaseMissing('users', ['id' => $userToDelete->id]);
     }
+
     public function test_password_can_be_reset_with_valid_token(): void
     {
+        // Fingir las notificaciones para que no se envíen correos electrónicos reales
         Notification::fake();
 
+        // Crear un usuario utilizando el factory
         $user = User::factory()->create();
 
+        // Enviar una solicitud para restablecer la contraseña del usuario
         $this->post('/forgot-password', ['email' => $user->email]);
 
+        // Verificar que se haya enviado una notificación de restablecimiento de contraseña al usuario
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            // Enviar una solicitud para restablecer la contraseña utilizando el token de la notificación
             $response = $this->post('/reset-password', [
                 'token' => $notification->token,
                 'email' => $user->email,
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'password', // Establecer la nueva contraseña
+                'password_confirmation' => 'password', // Confirmar la nueva contraseña
             ]);
 
+            // Verificar que la sesión no contiene errores después de restablecer la contraseña
             $response->assertSessionHasNoErrors();
 
+            // Retornar true para indicar que la notificación ha sido manejada correctamente
             return true;
         });
-
     }
+
+
+    public function testLoginWithInvalidCredentials()
+    {
+         // Crear un usuario en la base de datos usando el factory
+         $user = User::factory()->create([
+            'email' => 'userTest@example.com',
+            'password' => bcrypt('pass1234'),
+            'is_admin' => false,
+        ]);
+        // Realiza una solicitud POST a la ruta de inicio de sesión
+        $response = $this->postJson('/api/login', [
+            'email' => 'userTest@example.com',
+            'password' => 'pass1234',
+        ]);
+
+       // Verifica que la solicitud devuelva un código de estado 403
+        $response->assertStatus(403);
+    }
+    public function testLogout()
+    {
+        // Autenticar un usuario con privilegios de administrador
+        $user = \App\Models\User::factory()->create([
+            'is_admin' => true,
+        ]);
+        
+        // Generar un token JWT para el usuario autenticado
+        $token = JWTAuth::fromUser($user);
+    
+        // Simular una solicitud de cierre de sesión del usuario
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->postJson('/api/logout');
+    
+        // Verificar que la solicitud fue exitosa y devuelve el código de estado 204
+        $response->assertStatus(204);
+    
+        // Verificar que el token de acceso del usuario ha sido eliminado
+        $this->assertNull($user->currentAccessToken());
+    }
+    
+
 }
