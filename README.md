@@ -15,7 +15,7 @@
 
 
 ## Requirements
-You need to have PHP version **8.0** or above. Node.js version **12.0** or above.
+You need to have PHP version **8.1** or above. Node.js version **12.0** or above.
 
 
 ## Installation
