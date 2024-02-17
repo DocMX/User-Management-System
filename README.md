@@ -25,7 +25,7 @@ You need to have PHP version **8.0** or above. Node.js version **12.0** or above
 2. Go to the project root directory
 3. Run `composer install`
 4. Set the encryption key by executing php artisan key:generate --ansi
-5. Create database
+5. Create database named: usersystem
 6. Run migrations php artisan migrate --seed  
 7. Copy `.env.example` into `.env` file and adjust parameters
 8. Run `php artisan serve` to start the project at http://localhost:8000
