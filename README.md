@@ -15,7 +15,7 @@
 
 
 ## Requirements
-You need to have PHP version **8.0** or above. Node.js version **12.0** or above.
+You need to have PHP version **8.1** or above. Node.js version **12.0** or above.
 
 
 ## Installation
@@ -25,7 +25,7 @@ You need to have PHP version **8.0** or above. Node.js version **12.0** or above
 2. Go to the project root directory
 3. Run `composer install`
 4. Set the encryption key by executing php artisan key:generate --ansi
-5. Create database
+5. Create database named: usersystem
 6. Run migrations php artisan migrate --seed  
 7. Copy `.env.example` into `.env` file and adjust parameters
 8. Run `php artisan serve` to start the project at http://localhost:8000
@@ -60,7 +60,11 @@ To run tests with PhpUnit, follow these steps:
 5. You will be redirected to the Dashbopard administration panel.
 6. In the sidebar you can go to users.
 7. Here you can view, create, update and delete users based on your administrator permissions. Explore the different functionalities available in the panel to manage users.
-8. 
+
+### Note
+
+If the email given in the .env or in the requests requests are prohibited by cors, please let me know and I will update the version of the project.
+
 
 
 ## License
