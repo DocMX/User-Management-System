@@ -60,7 +60,11 @@ To run tests with PhpUnit, follow these steps:
 5. You will be redirected to the Dashbopard administration panel.
 6. In the sidebar you can go to users.
 7. Here you can view, create, update and delete users based on your administrator permissions. Explore the different functionalities available in the panel to manage users.
-8. 
+
+### Note
+
+If the email given in the .env or in the requests requests are prohibited by cors, please let me know and I will update the version of the project.
+
 
 
 ## License
