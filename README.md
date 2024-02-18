@@ -49,7 +49,7 @@ To run tests with PhpUnit, follow these steps:
 3. Run the following command to run all tests: `php artisan test`
 4. The tests in the tests\Feature\Api folder are the ones that are applied in the frontend, which are the ones that are applied for this test.
 
-### Navigate in the Frontend.
+### Navigate in the Frontend
 
 1. use `php artisan db:seed --class=UsersTableSeeder` in the root project.
 2. Open http://localhost:3000 in your browser.

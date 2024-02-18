@@ -38,7 +38,7 @@ Code Implementation: I wrote the minimum code necessary for the tests to pass.
 
 -Refactoring: Once the tests pass, I have tried to refactor the code to improve its quality and readability, keeping the tests as a safety net to avoid regressions.
 
-### Key Decisions and Challenges.
+### Key Decisions and Challenges
 
 During development, I faced several challenges and made key decisions that will affect the architecture and implementation of the application. Some of these challenges are:
 -The use of JWT, since I have only used laravel/sanctum
