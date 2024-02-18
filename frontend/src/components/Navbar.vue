@@ -66,22 +66,22 @@
   
   <script setup>
 
-  import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/vue'
-  import {ChevronDownIcon, UserIcon,ArrowLeftStartOnRectangleIcon, Bars4Icon} from '@heroicons/vue/24/solid'
-  import store from "../store";
-  import router from "../router";
-  import {computed} from "vue";
-  
-  const emit = defineEmits(['toggle-sidebar'])
-  
-  const currentUser = computed(() => store.state.user.data);
-  
-  function logout() {
-    store.dispatch('logout')
-      .then(() => {
-        router.push({name: 'login'})
-      })
-  }
+    import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/vue'
+    import {ChevronDownIcon, UserIcon,ArrowLeftStartOnRectangleIcon, Bars4Icon} from '@heroicons/vue/24/solid'
+    import store from "../store";
+    import router from "../router";
+    import {computed} from "vue";
+    
+    const emit = defineEmits(['toggle-sidebar'])
+    
+    const currentUser = computed(() => store.state.user.data);
+    
+    function logout() {
+      store.dispatch('logout')
+        .then(() => {
+          router.push({name: 'login'})
+        })
+    }
   
   </script>
   

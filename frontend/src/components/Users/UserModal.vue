@@ -67,78 +67,78 @@
 </template>
 
 <script setup>
-import { computed, defineEmits, ref, onUpdated } from 'vue';
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
-import store from "../../store/index";
-import Spinner from "../core/Spinner.vue";
-import CustomInput from "../core/CustomInput.vue";
+  import { computed, defineEmits, ref, onUpdated } from 'vue';
+  import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
+  import store from "../../store/index";
+  import Spinner from "../core/Spinner.vue";
+  import CustomInput from "../core/CustomInput.vue";
 
-const props = defineProps({
-  modelValue: Boolean,
-  user: {
-    required: true,
-    type: Object,
-  }
-});
+  const props = defineProps({
+    modelValue: Boolean,
+    user: {
+      required: true,
+      type: Object,
+    }
+  });
 
-const emit = defineEmits(['update:modelValue', 'close']);
+  const emit = defineEmits(['update:modelValue', 'close']);
 
-const user = ref({
-  id: props.user.id,
-  name: props.user.name,
-  email: props.user.email,
-  is_admin: props.user.is_admin !== undefined ? props.user.is_admin : false,
-});
-console.log(user.value);
-const loading = ref(false);
-
-const show = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-});
-
-onUpdated(() => {
-  user.value = {
+  const user = ref({
     id: props.user.id,
     name: props.user.name,
     email: props.user.email,
-  };
-});
+    is_admin: props.user.is_admin !== undefined ? props.user.is_admin : false,
+  });
+  console.log(user.value);
+  const loading = ref(false);
 
-function closeModal() {
-  show.value = false;
-  emit('close');
-}
+  const show = computed({
+    get: () => props.modelValue,
+    set: (value) => emit('update:modelValue', value)
+  });
 
-function onSubmit() {
-  loading.value = true;
-  console.log("Valor de is_admin:", user.value.is_admin);
-  if (user.value.id) {
-    store.dispatch('updateUser', user.value)
-      .then(response => {
-        loading.value = false;
-        if (response.status === 200) {
-          // TODO show notification
-          store.dispatch('getUsers');
-          closeModal();
-        }
-      });
-  } else {
-    store.dispatch('createUser', user.value)
-      .then(response => {
-        loading.value = false;
-        if (response.status === 201) {
-          // TODO show notification
-          store.dispatch('getUsers');
-          closeModal();
-        }
-      })
-      .catch(err => {
-        loading.value = false;
-        console.log(err);
-      });
+  onUpdated(() => {
+    user.value = {
+      id: props.user.id,
+      name: props.user.name,
+      email: props.user.email,
+    };
+  });
+
+  function closeModal() {
+    show.value = false;
+    emit('close');
   }
-}
+
+  function onSubmit() {
+    loading.value = true;
+    console.log("Valor de is_admin:", user.value.is_admin);
+    if (user.value.id) {
+      store.dispatch('updateUser', user.value)
+        .then(response => {
+          loading.value = false;
+          if (response.status === 200) {
+            // TODO show notification
+            store.dispatch('getUsers');
+            closeModal();
+          }
+        });
+    } else {
+      store.dispatch('createUser', user.value)
+        .then(response => {
+          loading.value = false;
+          if (response.status === 201) {
+            // TODO show notification
+            store.dispatch('getUsers');
+            closeModal();
+          }
+        })
+        .catch(err => {
+          loading.value = false;
+          console.log(err);
+        });
+    }
+  }
 </script>
 
 
